@@ -18,6 +18,9 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import InboxIcon from '@mui/icons-material/MoveToInbox';
 import MailIcon from '@mui/icons-material/Mail';
+import {useContext, useEffect} from "react";
+import AuthContext from "../../context/auth/authContext";
+
 
 const drawerWidth = 240;
 
@@ -90,6 +93,16 @@ export default function MiniDrawer() {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
 
+  const authContext = useContext(AuthContext);
+  const {login, error, clearErrors, isAuthenticated,loadUser,loading } = authContext;
+
+  useEffect(()=>{
+      if(localStorage.token){
+        loadUser()
+      }
+
+  },[error,isAuthenticated]);
+
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -101,7 +114,7 @@ export default function MiniDrawer() {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open}>
+      <AppBar position="static" open={open} sx={{mb:5}}>
         <Toolbar>
           <IconButton
             color="inherit"
