@@ -1,16 +1,11 @@
-import React, { useContext } from 'react';
-import {Route,  Navigate} from 'react-router-dom';
-import AuthContext from '../../context/auth/authContext';
+import { Navigate} from 'react-router-dom';
+import {CircularProgress} from "@mui/material";
 
-const PrivateRoute = ({ children }) => {
-  const authContext = useContext(AuthContext);
-  const { isAuthenticated, loading } = authContext;
-  return (
-      (!isAuthenticated && !loading) ?
-             isAuthenticated ? children : <Navigate to="/login" />
-          : children
 
-  );
+const PrivateRoute = ({ auth: { isAuthenticated, loading }, children }) => {
+
+  if(loading) return <CircularProgress />
+  return (isAuthenticated && !loading) ? children : <Navigate to="/login" />;
 };
 
 export default PrivateRoute;

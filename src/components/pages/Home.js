@@ -1,18 +1,17 @@
 import React, {useState, useContext, useEffect} from 'react';
-
-import AlertContext from '../../context/alert/alertContext';
 import AuthContext from '../../context/auth/authContext';
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Paper from '@mui/material/Paper';
-import Grid from '@mui/material/Unstable_Grid2';
-import {Link} from 'react-router-dom'
-import {BrowserRouter as Router, Route, Switch} from 'react-router-dom';
-import {Button, TextField} from "@mui/material";
-import {styled} from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import GeneralInfos from "../dashboard/generalInfos";
+import Box from "@mui/material/Box";
+import { styled, useTheme } from '@mui/material/styles';
+const DrawerHeader = styled('div')(({ theme }) => ({
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    padding: theme.spacing(0, 1),
+    // necessary for content to be below app bar
+    ...theme.mixins.toolbar,
+}));
 
 const Home = (props) => {
     const authContext = useContext(AuthContext);
@@ -26,7 +25,10 @@ const Home = (props) => {
 
     return(
         <>
+            <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+                <DrawerHeader />
             <GeneralInfos></GeneralInfos>
+            </Box>
         </>
     )
 }
