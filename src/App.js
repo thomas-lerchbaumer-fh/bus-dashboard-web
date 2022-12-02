@@ -15,31 +15,22 @@ import AlertInfo from "./components/layout/AlertInfo";
 import AlertState from "./context/alert/AlertState";
 import {Alert} from "@mui/material";
 import PrivateRoute from "./components/routing/PrivateRoute";
+import AvailableRoutes from "./components/routing/AvailableRoutes";
+import DashboardDataState from "./context/dashboardData/DashboardDataState";
 
 
 function App() {
     return (
         <div className="App">
             <AuthState>
+                <DashboardDataState>
                 <AlertState>
-                    <Menu></Menu>
                     <BrowserRouter>
-                        <Container sx={{maxWidth: '80%'}}>
-                            <AlertInfo></AlertInfo>
-                            <Routes>
-                                <Route
-                                    path="/"
-                                    element={
-                                        <PrivateRoute>
-                                            <Home />
-                                        </PrivateRoute>
-                                    }
-                                />
-                                <Route exact path='/login' element={<Login/>}></Route>
-                            </Routes>
-                        </Container>
+                    <Menu><AvailableRoutes></AvailableRoutes></Menu>
+
                     </BrowserRouter>
                 </AlertState>
+                </DashboardDataState>
             </AuthState>
         </div>
     );

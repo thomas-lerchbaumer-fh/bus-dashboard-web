@@ -6,3 +6,7 @@ export const LOGOUT = 'LOGOUT';
 export const CLEAR_ERRORS = 'CLEAER_ERRORS';
 export const SET_ALERT ="SET_ALERT";
 export const REMOVE_ALERT = "REMOVE_ALERT";
+export const GET_HEATMAP_FROM_DATA = "GET_HEATMAP_FROM_DATA"
+export const GET_HEATMAP_TO_DATA = "GET_HEATMAP_TO_DATA"
+export const DATA_FETCH_ERROR = "DATA_FETCH_ERROR"
+
