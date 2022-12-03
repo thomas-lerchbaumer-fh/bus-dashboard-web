@@ -10,7 +10,6 @@ import {CircularProgress} from "@mui/material";
 
 
 export default function Map(props) {
-    console.log(props);
     const {heatMap, loading,mapId} = props
 
     useEffect(() => {
@@ -20,7 +19,7 @@ export default function Map(props) {
             container._leaflet_id = null;
         }
 
-        var map = L.map(mapId).setView([-37.87, 175.475], 12);
+        var map = L.map(mapId).setView([50.519325,13.392709], 5);
 
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution:
@@ -29,7 +28,7 @@ export default function Map(props) {
 
         const points = heatMap
             ? heatMap.map((p) => {
-                return [p[1], p[0]];
+                return [p[0], p[1]];
             })
             : [];
 
@@ -39,7 +38,7 @@ export default function Map(props) {
 
     return (
         (loading)? <CircularProgress></CircularProgress>:
-        <div id={mapId} style={{ height: "100vh" }}></div>
+        <div id={mapId} style={{ height: "100%" }}></div>
 
     );
 }

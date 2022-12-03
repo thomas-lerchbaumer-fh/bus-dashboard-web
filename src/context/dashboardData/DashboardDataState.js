@@ -6,35 +6,83 @@ import axios from "axios";
 import {
     GET_HEATMAP_FROM_DATA,
     GET_HEATMAP_TO_DATA,
-    DATA_FETCH_ERROR
+    DATA_FETCH_ERROR,
+    GET_DEPARTURE_RANKING,
+    GET_DESTINATION_RANKING
 } from "../types";
 import setAuthToken from "../../utils/setAuthToken";
 
 
 const DashboardDataState = props => {
-    const initialState= {
-        loading: true,
+    const initialState = {
+        loadingFrom: true,
+        loadingTo: true,
+        loadingRanking: true,
         heatmapFromData: [],
         heatmapToData: [],
-        error: null
+        departureReq: [],
+        destinationReq: [],
+        error: null,
+        loadingRankingDest: true
+
     }
 
-    const [state,dispatch] = useReducer(dashboardDataReducer,initialState)
-
-
+    const [state, dispatch] = useReducer(dashboardDataReducer, initialState)
 
     const getHeatmapFromData = useCallback(async (params) => {
         setAuthToken(localStorage.token);
-        console.log('ex');
+        state.loading= true
         try {
             const res = await axios.post('/data/heatmap')
-            console.log(res)
             dispatch({
                 type: GET_HEATMAP_FROM_DATA,
                 payload: res.data
             });
         } catch (err) {
-            console.log(err);
+            dispatch({
+                type: DATA_FETCH_ERROR,
+            });
+        }
+    }, [dispatch]);
+
+    const getHeatmapToData = useCallback(async (params) => {
+        setAuthToken(localStorage.token);
+        state.loading = true
+        try {
+            const res = await axios.post('/data/heatmapTo')
+            dispatch({
+                type: GET_HEATMAP_TO_DATA,
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: DATA_FETCH_ERROR,
+            });
+        }
+    }, [dispatch]);
+
+    const getRanking = useCallback(async (params) => {
+        setAuthToken(localStorage.token);
+        const config = {
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        };
+        state.loadingRaking = true
+        try {
+            const res = await axios.post('/data/mostRequests', params, config)
+            if (params.action === "departure") {
+                dispatch({
+                    type: GET_DEPARTURE_RANKING,
+                    payload: res.data
+                });
+            } else {
+                dispatch({
+                    type: GET_DESTINATION_RANKING,
+                    payload: res.data
+                });
+            }
+        } catch (err) {
             dispatch({
                 type: DATA_FETCH_ERROR,
             });
@@ -42,12 +90,19 @@ const DashboardDataState = props => {
     }, [dispatch]);
 
 
-    return(
+    return (
         <DashboardDataContext.Provider value={{
-            loading: state.loading,
+            loadingFrom: state.loadingFrom,
+            loadingTo: state.loadingTo,
             heatmapFromData: state.heatmapFromData,
             heatMapToData: state.heatMapToData,
-            getHeatmapFromData
+            departureReq: state.departureReq,
+            destinationReq: state.destinationReq,
+            loadingRanking: state.loadingRanking,
+            loadingRankingDest: state.loadingRankingDest,
+            getHeatmapFromData,
+            getRanking,
+            getHeatmapToData
 
         }}>
             {props.children}
