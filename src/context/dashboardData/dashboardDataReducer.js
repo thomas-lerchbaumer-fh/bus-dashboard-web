@@ -2,7 +2,7 @@ import {
     GET_HEATMAP_FROM_DATA,
     GET_HEATMAP_TO_DATA,
     GET_DEPARTURE_RANKING,
-    GET_DESTINATION_RANKING
+    GET_DESTINATION_RANKING, GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA
 } from "../types";
 
 
@@ -31,6 +31,24 @@ export default (state,action)=>{
                 ...state,
                 heatMapToData: action.payload,
                 loadingTo:false
+            }
+        case GET_TIME_REQUESTS:
+            return{
+                ...state,
+                timeReq: action.payload,
+                loadingTimeReq:false
+            }
+        case GET_TIME_CALENDAR:
+            return{
+                ...state,
+                timeCalendar: action.payload,
+                loadingTimeCalendar: false
+            }
+        case GET_GENERAL_DATA:
+            return{
+                ...state,
+                generalData: action.payload,
+                loadingGeneralData: false
             }
     }
 

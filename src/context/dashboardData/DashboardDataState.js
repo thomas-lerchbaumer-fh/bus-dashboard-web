@@ -8,7 +8,8 @@ import {
     GET_HEATMAP_TO_DATA,
     DATA_FETCH_ERROR,
     GET_DEPARTURE_RANKING,
-    GET_DESTINATION_RANKING
+    GET_DESTINATION_RANKING,
+    GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA
 } from "../types";
 import setAuthToken from "../../utils/setAuthToken";
 
@@ -22,9 +23,14 @@ const DashboardDataState = props => {
         heatmapToData: [],
         departureReq: [],
         destinationReq: [],
+        timeReq: [],
+        loadingTimeReq: true,
         error: null,
-        loadingRankingDest: true
-
+        loadingRankingDest: true,
+        timeCalendar: [],
+        loadingTimeCalendar: true,
+        generalData: [],
+        loadingGeneralData:true
     }
 
     const [state, dispatch] = useReducer(dashboardDataReducer, initialState)
@@ -36,6 +42,52 @@ const DashboardDataState = props => {
             const res = await axios.post('/data/heatmap')
             dispatch({
                 type: GET_HEATMAP_FROM_DATA,
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: DATA_FETCH_ERROR,
+            });
+        }
+    }, [dispatch]);
+
+    const getTimeRequests = useCallback(async () => {
+        setAuthToken(localStorage.token);
+        try {
+            const res = await axios.post('/data/timeRequests')
+            dispatch({
+                type: GET_TIME_REQUESTS,
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: DATA_FETCH_ERROR,
+            });
+        }
+    }, [dispatch]);
+
+    const getTimeCalendar = useCallback(async () => {
+        setAuthToken(localStorage.token);
+        try {
+            const res = await axios.post('/data/requestsPerDay')
+            dispatch({
+                type: GET_TIME_CALENDAR,
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: DATA_FETCH_ERROR,
+            });
+        }
+    }, [dispatch]);
+
+
+    const getGeneralData = useCallback(async () => {
+        setAuthToken(localStorage.token);
+        try {
+            const res = await axios.post('/data/generalData')
+            dispatch({
+                type: GET_GENERAL_DATA,
                 payload: res.data
             });
         } catch (err) {
@@ -100,9 +152,18 @@ const DashboardDataState = props => {
             destinationReq: state.destinationReq,
             loadingRanking: state.loadingRanking,
             loadingRankingDest: state.loadingRankingDest,
+            timeReq: state.timeReq,
+            loadingTimeReq: state.loadingTimeReq,
+            timeCalendar: state.timeCalendar,
+            loadingTimeCalendar: state.loadingTimeCalendar,
+            generalData: state.generalData,
+            loadingGeneralData: state.loadingGeneralData,
             getHeatmapFromData,
             getRanking,
-            getHeatmapToData
+            getHeatmapToData,
+            getTimeRequests,
+            getTimeCalendar,
+            getGeneralData
 
         }}>
             {props.children}
