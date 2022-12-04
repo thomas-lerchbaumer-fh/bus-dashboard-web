@@ -7,7 +7,7 @@ import Home from "../pages/Home";
 import Login from "../login/Login";
 import AuthContext from "../../context/auth/authContext";
 import HeatMaps from "../pages/HeatMaps";
-
+import TimeRequests from "../pages/TimeRequests";
 
 const AvailableRoutes = (props) => {
     const authContext = useContext(AuthContext);
@@ -23,6 +23,14 @@ const AvailableRoutes = (props) => {
                     element={
                         <PrivateRoute auth={{isAuthenticated: isAuthenticated, loading: loading}}>
                             <Home/>
+                        </PrivateRoute>
+                    }
+                />
+                <Route
+                    path="/time"
+                    element={
+                        <PrivateRoute auth={{isAuthenticated: isAuthenticated, loading: loading}}>
+                            <TimeRequests/>
                         </PrivateRoute>
                     }
                 />
