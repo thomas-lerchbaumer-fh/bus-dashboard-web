@@ -6,7 +6,7 @@ import Paper from '@mui/material/Paper';
 import GridItem from '../layout/GridItem'
 const HalfGridItem = (props) => {
 
-
+    const {height} = props
 
 
 return(
