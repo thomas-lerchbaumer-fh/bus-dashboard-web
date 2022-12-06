@@ -45,6 +45,7 @@ const TimeRequests = (props) => {
                         <Grid item lg={12}>
                             <GridItem>
                                 <Typography variant="h5">Requests per day (departure date)</Typography>
+
                                 <div style={{width: "100%", height: "30vh"}}>
                                     <TimeCalendar data={timeCalendar} loading={loadingTimeCalendar}></TimeCalendar>
                                 </div>
