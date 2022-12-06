@@ -23,6 +23,7 @@ import MapIcon from '@mui/icons-material/Map';
 import menuEntries from '../../utils/menuEntries'
 import {Link} from 'react-router-dom';
 
+import DynamicIcon from "../layout/DynamicIcon";
 
 const drawerWidth = 240;
 
@@ -160,7 +161,9 @@ export default function MiniDrawer(props) {
                                         justifyContent: 'center',
                                     }}
                                 >
-                                    <MapIcon></MapIcon>
+
+
+                                    <DynamicIcon name={item.icon}></DynamicIcon>
                                 </ListItemIcon>
                                 <ListItemText primary={item.title} sx={{opacity: open ? 1 : 0}}/>
                             </ListItemButton>
@@ -169,7 +172,7 @@ export default function MiniDrawer(props) {
                 </List>
                 <Divider/>
             </Drawer>
-            <Box component="main" sx={{flexGrow: 1, p: 3}}>
+            <Box component="main" sx={{flexGrow: 1, p: 5}}>
                 <DrawerHeader/>
                 {props.children}
             </Box>

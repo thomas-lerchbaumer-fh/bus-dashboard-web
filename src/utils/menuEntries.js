@@ -1,12 +1,17 @@
 const menuEntries = [{
     "title": "Heatmaps",
-    "icon": "MapIcon",
+    "icon": "Map",
     "navTo": '/heatmaps',
     },
     {
         "title": "Time",
-        "icon": "AccessTimeIcon",
+        "icon": "AccessTime",
         "navTo": '/time',
+    },
+    {
+        "title": "Time",
+        "icon": "People",
+        "navTo": '/pax',
     }
     ]
 

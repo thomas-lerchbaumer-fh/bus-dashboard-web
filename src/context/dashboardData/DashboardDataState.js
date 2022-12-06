@@ -9,7 +9,7 @@ import {
     DATA_FETCH_ERROR,
     GET_DEPARTURE_RANKING,
     GET_DESTINATION_RANKING,
-    GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA
+    GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA, GET_NO_RESULTS
 } from "../types";
 import setAuthToken from "../../utils/setAuthToken";
 
@@ -30,18 +30,38 @@ const DashboardDataState = props => {
         timeCalendar: [],
         loadingTimeCalendar: true,
         generalData: [],
-        loadingGeneralData:true
+        loadingGeneralData: true,
+        noResultsForRequest: [],
+        loadingNoResults: true
     }
 
     const [state, dispatch] = useReducer(dashboardDataReducer, initialState)
 
     const getHeatmapFromData = useCallback(async (params) => {
         setAuthToken(localStorage.token);
-        state.loading= true
+        state.loading = true
         try {
             const res = await axios.post('/data/heatmap')
             dispatch({
                 type: GET_HEATMAP_FROM_DATA,
+                payload: res.data
+            });
+        } catch (err) {
+            dispatch({
+                type: DATA_FETCH_ERROR,
+            });
+        }
+    }, [dispatch]);
+
+
+    const getNoResults = useCallback(async (params) => {
+        setAuthToken(localStorage.token);
+        state.loading = true
+        try {
+            const res = await axios.post('/data/noSearchResults')
+            console.log(res);
+            dispatch({
+                type: GET_NO_RESULTS,
                 payload: res.data
             });
         } catch (err) {
@@ -158,12 +178,15 @@ const DashboardDataState = props => {
             loadingTimeCalendar: state.loadingTimeCalendar,
             generalData: state.generalData,
             loadingGeneralData: state.loadingGeneralData,
+            noResultsForRequest: state.noResultsForRequest,
+            loadingNoResults: state.loadingNoResults,
             getHeatmapFromData,
             getRanking,
             getHeatmapToData,
             getTimeRequests,
             getTimeCalendar,
-            getGeneralData
+            getGeneralData,
+            getNoResults
 
         }}>
             {props.children}
