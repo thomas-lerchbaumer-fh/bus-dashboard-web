@@ -21,7 +21,6 @@ const GeneralInfos = (props) => {
 
     const nf = new Intl.NumberFormat();
 
-    console.log(data)
     return (
         (loading)?<CircularProgress></CircularProgress>:
         <>

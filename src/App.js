@@ -17,19 +17,20 @@ import {Alert} from "@mui/material";
 import PrivateRoute from "./components/routing/PrivateRoute";
 import AvailableRoutes from "./components/routing/AvailableRoutes";
 import DashboardDataState from "./context/dashboardData/DashboardDataState";
-
+import LandingPageState from "./context/landingPageData/LandingPageState";
 
 function App() {
     return (
         <div className="App">
             <AuthState>
                 <DashboardDataState>
-                <AlertState>
-                    <BrowserRouter>
-                    <Menu><AvailableRoutes></AvailableRoutes></Menu>
-
-                    </BrowserRouter>
-                </AlertState>
+                    <LandingPageState>
+                        <AlertState>
+                            <BrowserRouter>
+                                <Menu><AvailableRoutes></AvailableRoutes></Menu>
+                            </BrowserRouter>
+                        </AlertState>
+                    </LandingPageState>
                 </DashboardDataState>
             </AuthState>
         </div>

@@ -6,6 +6,7 @@ import Box from "@mui/material/Box";
 import { styled, useTheme } from '@mui/material/styles';
 import DashboardDataContext from "../../context/dashboardData/dashboardDataContext";
 import {CircularProgress} from "@mui/material";
+import HomeDataGrid from "../datagrids/HomeDataGrid";
 const DrawerHeader = styled('div')(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
@@ -34,9 +35,10 @@ const Home = (props) => {
     return(
         <>
             <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-
             <GeneralInfos data={generalData} loading={loadingGeneralData}></GeneralInfos>
+                <HomeDataGrid></HomeDataGrid>
             </Box>
+
         </>
     )
 }

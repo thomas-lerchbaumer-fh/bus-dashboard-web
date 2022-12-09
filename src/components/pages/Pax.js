@@ -20,7 +20,6 @@ const Pax = (props)=>{
     useEffect(() => {
         getNoResults()
 
-        console.log(noResultsForRequest)
     }, [getNoResults]);
 
     return(

@@ -59,7 +59,6 @@ const DashboardDataState = props => {
         state.loading = true
         try {
             const res = await axios.post('/data/noSearchResults')
-            console.log(res);
             dispatch({
                 type: GET_NO_RESULTS,
                 payload: res.data
