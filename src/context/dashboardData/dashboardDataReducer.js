@@ -2,7 +2,7 @@ import {
     GET_HEATMAP_FROM_DATA,
     GET_HEATMAP_TO_DATA,
     GET_DEPARTURE_RANKING,
-    GET_DESTINATION_RANKING, GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA, GET_NO_RESULTS
+    GET_DESTINATION_RANKING, GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA, GET_NO_RESULTS, GET_RANKING_ROUTES
 } from "../types";
 
 
@@ -55,6 +55,12 @@ export default (state,action)=>{
                 ...state,
                 noResultsForRequest: action.payload,
                 loadingNoResults: false,
+            }
+        case GET_RANKING_ROUTES:
+            return{
+                ...state,
+                rankedRoutes: action.payload,
+                loadingRankedRoutes: false
             }
     }
 

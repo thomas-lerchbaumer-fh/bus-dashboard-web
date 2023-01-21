@@ -9,7 +9,7 @@ import {
     DATA_FETCH_ERROR,
     GET_DEPARTURE_RANKING,
     GET_DESTINATION_RANKING,
-    GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA, GET_NO_RESULTS
+    GET_TIME_REQUESTS, GET_TIME_CALENDAR, GET_GENERAL_DATA, GET_NO_RESULTS, GET_RANKING_ROUTES
 } from "../types";
 import setAuthToken from "../../utils/setAuthToken";
 
@@ -32,7 +32,9 @@ const DashboardDataState = props => {
         generalData: [],
         loadingGeneralData: true,
         noResultsForRequest: [],
-        loadingNoResults: true
+        loadingNoResults: true,
+        loadingRankedRoutes: true,
+        rankedRoutes: []
     }
 
     const [state, dispatch] = useReducer(dashboardDataReducer, initialState)
@@ -53,6 +55,26 @@ const DashboardDataState = props => {
         }
     }, [dispatch]);
 
+
+    const getRankingRoutes = useCallback(async ()=>{
+        setAuthToken(localStorage.token)
+
+        try{
+            const res = await axios.post('/data/getRankingRoutes')
+            console.log(res);
+            dispatch({
+                type:GET_RANKING_ROUTES,
+                payload:res.data,
+            })
+        }catch (e)
+        {
+            dispatch({
+                type:DATA_FETCH_ERROR
+            })
+        }
+
+
+    },[dispatch])
 
     const getNoResults = useCallback(async (params) => {
         setAuthToken(localStorage.token);
@@ -179,7 +201,10 @@ const DashboardDataState = props => {
             loadingGeneralData: state.loadingGeneralData,
             noResultsForRequest: state.noResultsForRequest,
             loadingNoResults: state.loadingNoResults,
+            rankedRoutes: state.rankedRoutes,
+            loadingRankedRoutes:state.loadingRankedRoutes,
             getHeatmapFromData,
+            getRankingRoutes,
             getRanking,
             getHeatmapToData,
             getTimeRequests,

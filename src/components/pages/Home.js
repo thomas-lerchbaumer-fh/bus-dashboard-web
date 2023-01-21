@@ -7,14 +7,6 @@ import { styled, useTheme } from '@mui/material/styles';
 import DashboardDataContext from "../../context/dashboardData/dashboardDataContext";
 import {CircularProgress} from "@mui/material";
 import HomeDataGrid from "../datagrids/HomeDataGrid";
-const DrawerHeader = styled('div')(({ theme }) => ({
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    padding: theme.spacing(0, 1),
-    // necessary for content to be below app bar
-    ...theme.mixins.toolbar,
-}));
 
 const Home = (props) => {
     const authContext = useContext(AuthContext);

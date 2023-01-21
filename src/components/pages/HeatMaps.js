@@ -10,43 +10,71 @@ import GridItem from "../layout/GridItem";
 import Typography from "@mui/material/Typography";
 import DepartureBoardIcon from '@mui/icons-material/DepartureBoard';
 import RankingTable from "../dashboard/heatMap/RankingTable";
+import RankingTableRoutes from "../dashboard/heatMap/RankingTableRoutes";
 
 const HeatMaps = (props) => {
 
     const dashboardDataContext = useContext(DashboardDataContext)
-    const {loadingTo,loadingFrom, error,loadingRankingDest, heatmapFromData, heatMapToData, getHeatmapFromData, getHeatmapToData,getRanking,departureReq, loadingRanking,destinationReq,} = dashboardDataContext;
+    const {
+        loadingTo,
+        loadingFrom,
+        error,
+        loadingRankingDest,
+        heatmapFromData,
+        heatMapToData,
+        getHeatmapFromData,
+        getHeatmapToData,
+        getRanking,
+        departureReq,
+        loadingRanking,
+        destinationReq,
+        getRankingRoutes,
+        loadingRankedRoutes,
+        rankedRoutes
+    } = dashboardDataContext;
 
     useEffect(() => {
         getHeatmapFromData();
-        getRanking({"action":"departure"})
-        getRanking({"action":"destination"})
+        getRanking({"action": "departure"})
+        getRanking({"action": "destination"})
         getHeatmapToData()
+        getRankingRoutes()
     }, [error, getHeatmapToData]);
 
     return (
-        (loadingTo || loadingRanking || loadingFrom || loadingRankingDest ) ? <CircularProgress></CircularProgress> :
+        (loadingTo || loadingRanking || loadingFrom || loadingRankingDest || loadingRankedRoutes) ? <CircularProgress></CircularProgress> :
             <>
-                <Grid container spacing={4}  alignItems="stretch">
+                <Grid container spacing={4} alignItems="stretch">
                     <HalfGridItem>
-                        <Map heatMap={heatmapFromData} loading={loadingFrom} mapId="map-1" />
+                        <Map heatMap={heatmapFromData} loading={loadingFrom} mapId="map-1"/>
                     </HalfGridItem>
                     <Grid xs={12} xl={4} md={4} lg={4} item>
                         <GridItem>
-                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Departure Requests (Radius 20km) </Typography>
+                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Departure Requests
+                                (Radius 20km) </Typography>
 
                             <RankingTable loading={loadingRanking} ranking={departureReq}></RankingTable>
                         </GridItem>
                     </Grid>
                     <Grid xs={12} xl={4} md={4} lg={4} item>
                         <GridItem>
-                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Destination Requests (Radius 20km)</Typography>
+                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Destination
+                                Requests (Radius 20km)</Typography>
                             <RankingTable loading={loadingRanking} ranking={destinationReq}></RankingTable>
                         </GridItem>
                     </Grid>
                     <HalfGridItem>
-                        <Map heatMap={heatMapToData} loading={loadingTo} mapId="map-2" />
+                        <Map heatMap={heatMapToData} loading={loadingTo} mapId="map-2"/>
                     </HalfGridItem>
-
+                    <HalfGridItem>
+                        <Map heatMap={heatmapFromData} loading={loadingFrom} mapId="map-1"/>
+                    </HalfGridItem>
+                    <Grid xs={12} xl={4} md={4} lg={4} item>
+                        <GridItem>
+                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Routes (no roundtrips) </Typography>
+                            <RankingTableRoutes loading={loadingRankedRoutes} ranking={rankedRoutes}></RankingTableRoutes>
+                        </GridItem>
+                    </Grid>
                 </Grid>
 
 

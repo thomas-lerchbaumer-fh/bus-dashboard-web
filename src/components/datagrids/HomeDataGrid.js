@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react'
 import Grid from "@mui/material/Unstable_Grid2";
 import GridItem from "../layout/GridItem";
 import LandingPageContext from "../../context/landingPageData/landingPageContext";
-import {CircularProgress, Slider, TextField} from "@mui/material";
+import {Chip, CircularProgress, Slider, TextField} from "@mui/material";
 import {DataGrid, GRID_DATE_COL_DEF, GridToolbar} from "@mui/x-data-grid";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
@@ -140,16 +140,17 @@ const HomeDataGrid = props => {
     const handlePaxChange = (event, newValue) => {
         setPaxValue(newValue);
 
-
     };
 
     const handlePaxOnEnd = (event, newValue) => {
-        setFilter([{
-            columnField: "pax",
-            operatorValue: "<=",
-            value: newValue
-        },
-        ])
+
+            setFilter([{
+                columnField: "pax",
+                operatorValue: "<=",
+                value: newValue
+            },
+            ])
+
     }
 
 
@@ -174,7 +175,7 @@ const HomeDataGrid = props => {
     }
 
     useEffect(() => {
-        if(loadingLanding){
+        if (loadingLanding) {
             getSearchRequests()
             if (searchRequests) setFilteredData(searchRequests)
         }
@@ -194,7 +195,7 @@ const HomeDataGrid = props => {
                                 <Typography id="pax-slider" gutterBottom>
                                     Pax max {paxValue}
                                 </Typography>
-                                <Slider defaultValue={paxValue} onChange={handlePaxChange}
+                                <Slider defaultValue={paxValue} onChange={handlePaxChange} value={paxValue}
                                         onChangeCommitted={handlePaxOnEnd} aria-label="Pax" valueLabelDisplay="auto"
                                         aria-labelledby="pax-slider"/>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -212,10 +213,28 @@ const HomeDataGrid = props => {
                                         />
                                     </Stack>
                                 </LocalizationProvider>
-
+                            </Box>
+                            <Box sx={{width: 300}} mt={3}>
+                                {paxValue != 100 &&
+                                    <Chip label="Pax" variant="outlined" onDelete={() => {
+                                        setPaxValue(100)
+                                        setFilter([])
+                                    }
+                                    }/>
+                                }
+                                {dateRange[0] && dateRange[1] &&
+                                    <Chip label="Date" variant="outlined" onDelete={() => {
+                                        setDateRange(([null, null]))
+                                        setFilter([])
+                                    }
+                                    }/>
+                                }
                             </Box>
                         </GridItem>
+
+
                     </Grid>
+
                     <Grid item xs={12} md={8} lg={9} height={"60vh"}>
                         {!loadingLanding &&
                             <GridItem>
