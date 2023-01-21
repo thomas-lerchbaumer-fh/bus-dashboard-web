@@ -52,8 +52,9 @@ const NoResultsGrid = props =>{
             <DataGrid
                 rows={data}
                 columns={columns}
-                pageSize={10}
-                rowsPerPageOptions={[10]}
+                pageSize={20}
+                sx={{height:"90%"}}
+                rowsPerPageOptions={[20]}
                 checkboxSelection
                 disableSelectionOnClick
                 experimentalFeatures={{ newEditingApi: true }}

@@ -1,4 +1,10 @@
-const menuEntries = [{
+const menuEntries = [
+    {
+        "title": "Home",
+        "icon": "Home",
+        "navTo": '/',
+    },
+    {
     "title": "Heatmaps",
     "icon": "Map",
     "navTo": '/heatmaps',
@@ -10,8 +16,13 @@ const menuEntries = [{
     },
     {
         "title": "Time",
-        "icon": "People",
+        "icon": "FindInPage",
         "navTo": '/pax',
+    },
+    {
+        "title": "Customer Groups",
+        "icon": "Groups",
+        "navTo": '/groups',
     }
     ]
 

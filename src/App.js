@@ -18,19 +18,22 @@ import PrivateRoute from "./components/routing/PrivateRoute";
 import AvailableRoutes from "./components/routing/AvailableRoutes";
 import DashboardDataState from "./context/dashboardData/DashboardDataState";
 import LandingPageState from "./context/landingPageData/LandingPageState";
+import CustomerGroupDataState from "./context/customerGroupData/CustomerGroupDataState";
 
 function App() {
     return (
         <div className="App">
             <AuthState>
                 <DashboardDataState>
-                    <LandingPageState>
-                        <AlertState>
-                            <BrowserRouter>
-                                <Menu><AvailableRoutes></AvailableRoutes></Menu>
-                            </BrowserRouter>
-                        </AlertState>
-                    </LandingPageState>
+                    <CustomerGroupDataState>
+                        <LandingPageState>
+                            <AlertState>
+                                <BrowserRouter>
+                                    <Menu><AvailableRoutes></AvailableRoutes></Menu>
+                                </BrowserRouter>
+                            </AlertState>
+                        </LandingPageState>
+                    </CustomerGroupDataState>
                 </DashboardDataState>
             </AuthState>
         </div>
