@@ -8,6 +8,7 @@ import GroupIcon from '@mui/icons-material/Group';
 import Box from "@mui/material/Box";
 import DirectionsBusFilledIcon from '@mui/icons-material/DirectionsBusFilled';
 import PaidIcon from '@mui/icons-material/Paid';
+import AltRouteIcon from '@mui/icons-material/AltRoute';
 const Item = styled(Paper)(({theme}) => ({
     backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
     ...theme.typography.body2,
@@ -78,7 +79,7 @@ const GeneralInfos = (props) => {
                         <CardContent>
                             <Box display="flex" justifyContent="center" alignItems="center" flexDirection={"column"}
                                  p={2}>
-                                <PaidIcon  fontSize="large" color={"primary"}></PaidIcon>
+                                <AltRouteIcon   fontSize="large" color={"primary"}></AltRouteIcon >
                                 <Typography  variant="h5" component="div">
                                     Average Distance
                                 </Typography>

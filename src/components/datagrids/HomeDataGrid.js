@@ -14,6 +14,9 @@ import {DesktopDateRangePicker} from '@mui/x-date-pickers-pro/DesktopDateRangePi
 import Stack from '@mui/material/Stack';
 import {AdapterDateFns} from '@mui/x-date-pickers/AdapterDateFns';
 import locale from 'date-fns/locale/de-AT';
+import GroupIcon from "@mui/icons-material/Group";
+import AltRouteIcon from '@mui/icons-material/AltRoute';
+import DirectionsBusFilledIcon from '@mui/icons-material/DirectionsBusFilled';
 
 
 function buildApplyDateFilterFn(filterItem, compareFn, showTime = false) {
@@ -80,9 +83,12 @@ const dateColumnType = {
 
 const HomeDataGrid = props => {
     const [filteredData, setFilteredData] = useState()
-    const [paxValue, setPaxValue] = React.useState(100);
+    const [paxValue, setPaxValue] = useState(100);
     const [dateRange, setDateRange] = useState([null, null])
 
+    const [distanceValue,setDistanceValue] = useState(5000)
+
+    const [tmpData, setTmpData] =useState([]);
 
     const columns = [
         {field: 'id', headerName: 'ID', width: 50},
@@ -119,8 +125,8 @@ const HomeDataGrid = props => {
             field: 'distanceInMeters',
             headerName: 'Distance in km',
             width: 200,
-            valueGetter: (params) =>
-                `${(params.row.distanceInMeters / 1000).toLocaleString(undefined, {maximumFractionDigits: 2})}km`,
+            type:"number",
+            valueGetter: (params) =>(params.row.distanceInMeters / 1000)
         },
         {
             field: 'bookingIntegration_id',
@@ -139,10 +145,10 @@ const HomeDataGrid = props => {
 
     const handlePaxChange = (event, newValue) => {
         setPaxValue(newValue);
-
     };
 
     const handlePaxOnEnd = (event, newValue) => {
+            console.log(searchRequests,'searchreq')
 
             setFilter([{
                 columnField: "pax",
@@ -151,6 +157,66 @@ const HomeDataGrid = props => {
             },
             ])
 
+        if(searchRequests){
+            const tmpFiltered = searchRequests.filter(item => item.pax <= newValue);
+            let tmpPax=0;
+            let tmpDistance = 0;
+            let tmpAmount = 0
+            tmpFiltered.forEach(item =>{
+                tmpPax += item.pax;
+                tmpDistance += item.distanceInMeters
+                tmpAmount += item.cheapestPrice_amount
+            })
+
+            const result = {
+                "pax":tmpPax / tmpFiltered.length,
+                "distance": (tmpDistance/ tmpFiltered.length) / 1000,
+                "price":tmpAmount /tmpFiltered.length,
+                "requests":tmpFiltered.length
+            }
+            setFilteredData(result);
+
+        }
+
+
+    }
+
+    const calcFilteredDataValues = (filter, filterVal) =>{
+
+
+    }
+
+    const handleDistanceChange = (event,newValue)=>{
+        setDistanceValue(newValue)
+    }
+
+    const handleDistanceOnEnd = (event, newValue) =>{
+        setFilter([{
+            columnField: "distanceInMeters",
+            operatorValue: "<=",
+            value: newValue
+        },
+        ])
+        if(searchRequests){
+            const tmpFiltered = searchRequests.filter(item => item.distanceInMeters <= newValue *1000);
+            let tmpPax=0;
+            let tmpDistance = 0;
+            let tmpAmount = 0
+            tmpFiltered.forEach(item =>{
+                tmpPax += item.pax;
+                tmpDistance += item.distanceInMeters
+                tmpAmount += item.cheapestPrice_amount
+            })
+
+            const result = {
+                "pax":tmpPax / tmpFiltered.length,
+                "distance": (tmpDistance/ tmpFiltered.length) / 1000,
+                "price":tmpAmount /tmpFiltered.length,
+                "requests":tmpFiltered.length
+            }
+            setFilteredData(result);
+
+        }
     }
 
 
@@ -171,6 +237,28 @@ const HomeDataGrid = props => {
                 value: [decpOne, decpTwo]
             },
             ])
+            if(searchRequests){
+
+                const startDate = newValue[0].$d
+                const endDate = newValue[1].$d
+                const tmpFiltered = searchRequests.filter(item => Date.parse(item.taskFrom_time) >=  Date.parse(startDate) && Date.parse(item.taskFrom_time) <= Date.parse(endDate));
+                let tmpPax=0;
+                let tmpDistance = 0;
+                let tmpAmount = 0
+                tmpFiltered.forEach(item =>{
+                    tmpPax += item.pax;
+                    tmpDistance += item.distanceInMeters
+                    tmpAmount += item.cheapestPrice_amount
+                })
+
+                const result = {
+                    "pax":tmpPax / tmpFiltered.length,
+                    "distance": (tmpDistance/ tmpFiltered.length) / 1000,
+                    "price":tmpAmount /tmpFiltered.length,
+                    "requests":tmpFiltered.length
+                }
+                setFilteredData(result);
+            }
         }
     }
 
@@ -185,7 +273,7 @@ const HomeDataGrid = props => {
 
 
     return (
-        (loadingLanding) ? <CircularProgress></CircularProgress> :
+        (loadingLanding) ? <></> :
             <>
                 <Grid container spacing={5}>
                     <Grid item xs={12} md={3} lg={3}>
@@ -193,11 +281,21 @@ const HomeDataGrid = props => {
                             <Box sx={{width: 300}}>
 
                                 <Typography id="pax-slider" gutterBottom>
-                                    Pax max {paxValue}
+                                    Pax {paxValue}
                                 </Typography>
                                 <Slider defaultValue={paxValue} onChange={handlePaxChange} value={paxValue}
                                         onChangeCommitted={handlePaxOnEnd} aria-label="Pax" valueLabelDisplay="auto"
                                         aria-labelledby="pax-slider"/>
+                                <Box sx={{width: 300}}>
+
+                                    <Typography id="distance-Slider" gutterBottom>
+                                        Distance {distanceValue} km
+                                    </Typography>
+                                    <Slider defaultValue={distanceValue} onChange={handleDistanceChange}  max={5000} value={distanceValue}
+                                            onChangeCommitted={handleDistanceOnEnd} aria-label="distance" valueLabelDisplay="auto"
+                                            aria-labelledby="distance-Slider"/>
+
+                                </Box>
                                 <LocalizationProvider dateAdapter={AdapterDayjs}>
                                     <Stack spacing={3}>
                                         <DesktopDateRangePicker
@@ -214,11 +312,21 @@ const HomeDataGrid = props => {
                                     </Stack>
                                 </LocalizationProvider>
                             </Box>
+
                             <Box sx={{width: 300}} mt={3}>
-                                {paxValue != 100 &&
+                                {paxValue !== 100 &&
                                     <Chip label="Pax" variant="outlined" onDelete={() => {
                                         setPaxValue(100)
                                         setFilter([])
+                                        setFilteredData([])
+                                    }
+                                    }/>
+                                }
+                                {distanceValue !== 5000 &&
+                                    <Chip label="distance" variant="outlined" onDelete={() => {
+                                        setDistanceValue(5000)
+                                        setFilter([])
+                                        setFilteredData([])
                                     }
                                     }/>
                                 }
@@ -226,6 +334,7 @@ const HomeDataGrid = props => {
                                     <Chip label="Date" variant="outlined" onDelete={() => {
                                         setDateRange(([null, null]))
                                         setFilter([])
+                                        setFilteredData([])
                                     }
                                     }/>
                                 }
@@ -251,12 +360,72 @@ const HomeDataGrid = props => {
                                     rowsPerPageOptions={[20]}
                                     checkboxSelection
                                     disableSelectionOnClick
-                                    experimentalFeatures={{newEditingApi: false}}
+                                    experimentalFeatures={{newEditingApi: true}}
                                 />
                             </GridItem>
                         }
                     </Grid>
                 </Grid>
+
+
+                {filteredData.requests && filter.length &&
+                <Grid container spacing={5}>
+                    <Grid item xs={3} >
+                        <GridItem>
+                            <Box display="flex" justifyContent="space-around" alignItems="center" flexDirection={"row"}
+                                 >
+                                <GroupIcon fontSize="large" color={"primary"}></GroupIcon>
+                                <Typography  variant="h6" component="div">
+                                    AVG Pax
+                                </Typography>
+                                <Typography variant="h6" color="text.secondary">
+                                    {filteredData.pax.toFixed(2)}
+                                </Typography>
+                            </Box>
+                        </GridItem>
+                    </Grid>
+                    <Grid item xs={3} >
+                        <GridItem>
+                            <Box display="flex" justifyContent="space-around" alignItems="center" flexDirection={"row"}
+                            >
+                                <DirectionsBusFilledIcon fontSize="large" color={"primary"}></DirectionsBusFilledIcon>
+                                <Typography  variant="h6" component="div">
+                                    Requests
+                                </Typography>
+                                <Typography variant="h6" color="text.secondary">
+                                    {filteredData.requests}
+                                </Typography>
+                            </Box>
+                        </GridItem>
+                    </Grid>
+                    <Grid item xs={3} >
+                        <GridItem>      <Box display="flex" justifyContent="space-around" alignItems="center" flexDirection={"row"}
+                        >
+                            <GroupIcon fontSize="large" color={"primary"}></GroupIcon>
+                            <Typography  variant="h6" component="div">
+                                AVG Order Vol
+                            </Typography>
+                            <Typography variant="h6" color="text.secondary">
+                                {filteredData.price.toFixed(2)}
+                            </Typography>
+                        </Box></GridItem>
+                    </Grid>
+                    <Grid item xs={3} >
+                        <GridItem>      <Box display="flex" justifyContent="space-around" alignItems="center" flexDirection={"row"}
+                        >
+                            <AltRouteIcon  fontSize="large" color={"primary"}></AltRouteIcon >
+                            <Typography  variant="h6" component="div">
+                                AVG Distance
+                            </Typography>
+                            <Typography variant="h6" color="text.secondary">
+                                {filteredData.distance.toFixed(2)}km
+                            </Typography>
+                        </Box></GridItem>
+                    </Grid>
+                </Grid>
+                }
+
+
             </>
 
 

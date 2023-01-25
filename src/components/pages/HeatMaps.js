@@ -42,7 +42,8 @@ const HeatMaps = (props) => {
     }, [error, getHeatmapToData]);
 
     return (
-        (loadingTo || loadingRanking || loadingFrom || loadingRankingDest || loadingRankedRoutes) ? <CircularProgress></CircularProgress> :
+        (loadingTo || loadingRanking || loadingFrom || loadingRankingDest || loadingRankedRoutes) ?
+            <CircularProgress></CircularProgress> :
             <>
                 <Grid container spacing={4} alignItems="stretch">
                     <HalfGridItem>
@@ -66,17 +67,20 @@ const HeatMaps = (props) => {
                     <HalfGridItem>
                         <Map heatMap={heatMapToData} loading={loadingTo} mapId="map-2"/>
                     </HalfGridItem>
-                    <HalfGridItem>
-                        <Map heatMap={heatmapFromData} loading={loadingFrom} mapId="map-1"/>
-                    </HalfGridItem>
-                    <Grid xs={12} xl={4} md={4} lg={4} item>
+                    <Grid xs={12} xl={6} md={6} lg={6} item>
                         <GridItem>
-                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Routes (no roundtrips) </Typography>
-                            <RankingTableRoutes loading={loadingRankedRoutes} ranking={rankedRoutes}></RankingTableRoutes>
+                            <Map heatMap={heatmapFromData} loading={loadingFrom} mapId="map-1"/>
+                        </GridItem>
+                    </Grid>
+                    <Grid xs={12} xl={6} md={6} lg={6} item>
+                        <GridItem>
+                            <Typography variant="h5"> <DepartureBoardIcon></DepartureBoardIcon> Top 5 Routes (no
+                                roundtrips) </Typography>
+                            <RankingTableRoutes loading={loadingRankedRoutes}
+                                                ranking={rankedRoutes}></RankingTableRoutes>
                         </GridItem>
                     </Grid>
                 </Grid>
-
 
 
             </>
